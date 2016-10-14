@@ -31,7 +31,7 @@
 
 usage="Usage: spark-daemon.sh [--config <conf-dir>] (start|stop|status) <spark-command> <spark-instance-number> <args...>"
 
-SPARK_PREFIX=$HOME/spark
+
 
 # if no args specified, show usage
 if [ $# -le 1 ]; then

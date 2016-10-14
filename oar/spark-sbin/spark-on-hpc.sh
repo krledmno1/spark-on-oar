@@ -66,12 +66,12 @@ case "$1" in
       echo 
 
       # run spark-daemon-on-hpc.sh script on the master 
-      oarsh $SPARK_MASTER_IP ${SPARK_HOME}/sbin/spark-daemon-on-hpc.sh --config $SPARK_CONF_DIR start org.apache.spark.deploy.master.Master 1 --ip $SPARK_MASTER_IP --port $SPARK_MASTER_PORT --webui-port $SPARK_MASTER_WEBUI_PORT 2>&1 | sed "s/^/$SPARK_MASTER_IP: /"
+      oarsh $SPARK_MASTER_IP "SPARK_PREFIX=$SPARK_PREFIX ${SPARK_HOME}/sbin/spark-daemon-on-hpc.sh --config $SPARK_CONF_DIR start org.apache.spark.deploy.master.Master 1 --ip $SPARK_MASTER_IP --port $SPARK_MASTER_PORT --webui-port $SPARK_MASTER_WEBUI_PORT" 2>&1 | sed "s/^/$SPARK_MASTER_IP: /"
 
       # run spark-daemon-on-hpc.sh script on all the slaves
       SLAVE_NUM=1
       for slave in $SLAVES; do
-         oarsh $slave ${SPARK_HOME}/sbin/spark-daemon-on-hpc.sh --config $SPARK_CONF_DIR start org.apache.spark.deploy.worker.Worker $SLAVE_NUM spark://$SPARK_MASTER_IP:$SPARK_MASTER_PORT 2>&1 | sed "s/^/$slave: /" &
+         oarsh $slave "SPARK_PREFIX=$SPARK_PREFIX ${SPARK_HOME}/sbin/spark-daemon-on-hpc.sh --config $SPARK_CONF_DIR start org.apache.spark.deploy.worker.Worker $SLAVE_NUM spark://$SPARK_MASTER_IP:$SPARK_MASTER_PORT" 2>&1 | sed "s/^/$slave: /" &
          (( SLAVE_NUM++ ))   
       done
 
@@ -92,12 +92,12 @@ case "$1" in
       # stop all the slaves
       SLAVE_NUM=1
       for slave in $SLAVES; do
-         oarsh $slave ${SPARK_HOME}/sbin/spark-daemon-on-hpc.sh --config $SPARK_CONF_DIR stop org.apache.spark.deploy.worker.Worker $SLAVE_NUM 2>&1 | sed "s/^/$slave: /" &
+         oarsh $slave "SPARK_PREFIX=$SPARK_PREFIX ${SPARK_HOME}/sbin/spark-daemon-on-hpc.sh --config $SPARK_CONF_DIR stop org.apache.spark.deploy.worker.Worker $SLAVE_NUM" 2>&1 | sed "s/^/$slave: /" &
          (( SLAVE_NUM++ ))   
       done
 
       # stop the master
-      oarsh $SPARK_MASTER_IP ${SPARK_HOME}/sbin/spark-daemon-on-hpc.sh --config $SPARK_CONF_DIR stop org.apache.spark.deploy.master.Master 1 2>&1 | sed "s/^/$SPARK_MASTER_IP: /" &
+      oarsh "SPARK_PREFIX=$SPARK_PREFIX $SPARK_MASTER_IP ${SPARK_HOME}/sbin/spark-daemon-on-hpc.sh --config $SPARK_CONF_DIR stop org.apache.spark.deploy.master.Master 1" 2>&1 | sed "s/^/$SPARK_MASTER_IP: /" &
 
       # overwrite the 2 master ports in the local config (not sure why...)
       sed -i -e "s/^SPARK_MASTER_PORT=.*$/SPARK_MASTER_PORT=RANDOM/" -e "s/^SPARK_MASTER_WEBUI_PORT=.*$/SPARK_MASTER_WEBUI_PORT=RANDOM/" $SPARK_ENV

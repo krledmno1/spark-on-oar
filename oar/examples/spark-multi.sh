@@ -5,6 +5,9 @@
 export SPARK_HOME=$HOME/spark  
 export SPARK_JOB_DIR=$HOME/jobs
 
+#????
+export SPARK_PREFIX=$HOME/spark
+
 # Create/append spark configuration in SPARK_JOB_DIR from PBS environments. 
 # Specific spark configuration can be put into the SPARK_JOB_DIR/conf/* a priori.
 # If existing configuration is found SPARK_JOB_DIR/conf/*, spark-on-hpc.sh will

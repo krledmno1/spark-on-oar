@@ -1,8 +1,5 @@
 #!/bin/bash
 
-export SPARK_HOME=$HOME/spark  
-export SPARK_JOB_DIR=$HOME/jobs
-
 # Import several spark variables
 source $SPARK_HOME/sbin/spark-on-hpc.sh vars
 
