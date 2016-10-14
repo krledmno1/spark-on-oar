@@ -2,8 +2,11 @@
 #
 
 
+
 export SPARK_HOME=$HOME/spark  
-export SPARK_JOB_DIR=$HOME/jobs
+
+# no need to change these
+export SPARK_JOB_DIR=`pwd`
 export SPARK_PREFIX=$SPARK_HOME
 
 # Create/append spark configuration in SPARK_JOB_DIR from PBS environments. 
