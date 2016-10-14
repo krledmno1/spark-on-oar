@@ -46,7 +46,7 @@ oarsub -l nodes=2/cpu=1/core=1,walltime=0:20 -n sparkPi spark-multi.sh
 ```
 By default spark-multi.sh submits a SparkPi job with parameter 10. You should replace this line with your own submissions.
 
-The script will read the resource constraints (passed via the -l flag) and create as many spark executors as there are nodes. I also will assign resources to spark individual executors (number of cores and memory).
+The script will read the resource constraints (passed via the -l flag) and create as many spark executors as there are nodes. It will  also assign resources to individual spark executors (e.g., number of cores and available memory).
 
 Finally, it will write all the logs in your jobs folder.
 
