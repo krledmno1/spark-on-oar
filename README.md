@@ -39,10 +39,14 @@ The assumption is that these files are on a distributed file system (e.g., NFS) 
 mkdir jobs
 # copy an example submission script
 cp spark-on-oar/oar/spark-multi.sh jobs/
+cd jobs
 # Edit the $SPARK_HOME env variable in spark-multi.sh to point to your spark folder
 # then submit with oarsub, e.g.:
 oarsub -l nodes=2/cpu=1/core=1,walltime=0:20 -n sparkPi spark-multi.sh
 ```
 By default spark-multi.sh submits a SparkPi job with parameter 10. You should replace this line with your own submissions.
-Spark will write all the logs in your jobs folder.
+
+The script will read the resource constraints (passed via the -l flag) and create as many spark executors as there are nodes. I also will assign resources to spark individual executors (number of cores and memory).
+
+Finally, it will write all the logs in your jobs folder.
 
